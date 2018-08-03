@@ -1,4 +1,4 @@
-package com.nosetrap.draglibrary.overlay
+package com.nosetrap.draglib.overlay
 
 import android.app.Service
 import android.content.Intent
