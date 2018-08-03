@@ -1,4 +1,4 @@
-package com.nosetrap.drag.overlay
+package com.nosetrap.draglibrary.overlay
 
 import android.content.Context
 import android.util.DisplayMetrics

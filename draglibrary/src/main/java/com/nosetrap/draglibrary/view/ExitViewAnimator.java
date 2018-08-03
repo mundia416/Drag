@@ -1,4 +1,4 @@
-package com.nosetrap.drag.view;
+package com.nosetrap.draglibrary.view;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;

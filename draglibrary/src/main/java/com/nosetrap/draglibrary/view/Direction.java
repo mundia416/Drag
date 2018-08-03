@@ -1,4 +1,4 @@
-package com.nosetrap.drag.view;
+package com.nosetrap.draglibrary.view;
 
 /**
  * Created by florentchampigny on 01/04/2016.

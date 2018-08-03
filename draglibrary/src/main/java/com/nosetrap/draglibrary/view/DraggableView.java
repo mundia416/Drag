@@ -1,4 +1,4 @@
-package com.nosetrap.drag.view;
+package com.nosetrap.draglibrary.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
