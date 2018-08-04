@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.IBinder
+import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import java.util.*
 
@@ -15,9 +17,9 @@ import java.util.*
 abstract class DraggableOverlayService : Service() {
     private val onTouchListeners = ArrayList<DraggableOverlayOnTouchListener>()
 
-    private lateinit var layoutInflater: LayoutInflater
+    protected lateinit var layoutInflater: LayoutInflater
 
-    private lateinit var windowManager: WindowManager
+    protected lateinit var windowManager: WindowManager
 
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -25,12 +27,19 @@ abstract class DraggableOverlayService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        registerDraggableTouchListener()
         initVars()
         code(intent)
+        registerDraggableTouchListener()
 
         return super.onStartCommand(intent, flags, startId)
 
+    }
+
+    /**
+     * inflate a view using the layoutInflater
+     */
+    fun inflateView(@LayoutRes layout:Int): View{
+        return layoutInflater.inflate(layout,null,false)
     }
 
     private fun initVars(){

@@ -10,16 +10,15 @@ import android.view.WindowManager
 /**
  * ontouch listener that enables an overlay that it is attached to be dragged by the user on the screen
  * pass this class as an onTouchListener on a view
+ * use subclass @Child if you want that dragging the view will result in the entire inflated layout to be dragged
  */
-open class DraggableOverlayOnTouchListener(private val overlayView: View, private val overlayParams: WindowManager.LayoutParams)
+open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View, private val overlayParams: WindowManager.LayoutParams)
     : View.OnTouchListener {
 
     init {
         //get screen dimension when the object is created
         updateScreenDimensions()
     }
-
-    //todo setup class for onClick and gestures
 
     /**
      * enable or disable the dragging ability. { even though this is enabled, it will only be able to
@@ -52,15 +51,15 @@ open class DraggableOverlayOnTouchListener(private val overlayView: View, privat
 
     private var onClickListener: View.OnClickListener? = null
 
-    private val windowManager = overlayView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    private val windowManager = inflatedOverlayView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     /**
      * a gestureDetector used only to add OnClickListener functionality
      */
-    private val onClickListenerGestureDetector = GestureDetector(overlayView.context,object :GestureDetector.SimpleOnGestureListener(){
+    private val onClickListenerGestureDetector = GestureDetector(inflatedOverlayView.context,object :GestureDetector.SimpleOnGestureListener(){
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             if(onClickListener != null){
-                onClickListener?.onClick(overlayView)
+                onClickListener?.onClick(inflatedOverlayView)
             }else{
                 return  false
             }
@@ -105,7 +104,7 @@ open class DraggableOverlayOnTouchListener(private val overlayView: View, privat
      * set a user defined gesture listener
      */
     fun setOnGestureListener(listener: GestureDetector.OnGestureListener){
-        customGestureDetector = GestureDetector(overlayView.context,listener)
+        customGestureDetector = GestureDetector(inflatedOverlayView.context,listener)
     }
 
     /**
@@ -133,7 +132,7 @@ open class DraggableOverlayOnTouchListener(private val overlayView: View, privat
                     val newY = (this.startingGridY + event.rawY - this.startingTouchY).toInt()
                     overlayParams.x = newX
                     overlayParams.y = newY
-                    val inflatedWidth = (overlayView?.width)
+                    val inflatedWidth = (inflatedOverlayView?.width)
                     if ((overlayParams.x + inflatedWidth) <= 0) {
                         overlayParams.x = 1 - inflatedWidth
                     } else if (overlayParams.x >= screenDimensions.screenWidth) {
@@ -145,7 +144,7 @@ open class DraggableOverlayOnTouchListener(private val overlayView: View, privat
                         overlayParams.y = screenDimensions.screenHeight - 1
                     }
 
-                    windowManager.updateViewLayout(overlayView, overlayParams)
+                    windowManager.updateViewLayout(inflatedOverlayView, overlayParams)
 
                     onPostDrag()
                 }
