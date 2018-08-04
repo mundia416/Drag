@@ -18,8 +18,10 @@ abstract class DraggableOverlayService : Service() {
     private val onTouchListeners = ArrayList<DraggableOverlayOnTouchListener>()
 
     protected lateinit var layoutInflater: LayoutInflater
+    private var layoutInflaterInitialised = false
 
     protected lateinit var windowManager: WindowManager
+    private var windowManagerInitialised = false
 
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -43,8 +45,14 @@ abstract class DraggableOverlayService : Service() {
     }
 
     private fun initVars(){
-        layoutInflater = LayoutInflater.from(this)
-        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        if(!layoutInflaterInitialised) {
+            layoutInflater = LayoutInflater.from(this)
+            layoutInflaterInitialised = true
+        }
+        if(!windowManagerInitialised) {
+            windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            windowManagerInitialised = true
+        }
     }
 
     /**
