@@ -57,6 +57,8 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
 
     private var onClickListener: View.OnClickListener? = null
 
+    private var onDragListener: OnDragListener? = null
+
 
     /**
      * a gestureDetector used only to add OnClickListener functionality
@@ -81,6 +83,13 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
     fun setOnClickListener(onClickListener: View.OnClickListener){
         this.onClickListener = onClickListener
 
+    }
+
+    /**
+     * set an on drag listener which monitors when the view is dragged
+     */
+    fun setOnDragListener(onDragListener: OnDragListener){
+        this.onDragListener = onDragListener
     }
 
 
@@ -116,6 +125,8 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
      *
      */
     override fun onTouch(view: View, event: MotionEvent): Boolean {
+        onDragListener?.onDrag(view)
+
       onClickListenerGestureDetector.onTouchEvent(event)
             customGestureDetector?.onTouchEvent(event)
 
