@@ -130,7 +130,7 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
       onClickListenerGestureDetector.onTouchEvent(event)
             customGestureDetector?.onTouchEvent(event)
 
-        onPreDrag()
+        onDragListener?.onPreDrag()
 
         if (isActive && isDragEnabled) {
             val rawX = if (inverseX) (event.rawX * -1) else event.rawX
@@ -162,7 +162,7 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
 
                     windowManager.updateViewLayout(inflatedOverlayView, overlayParams)
 
-                    onPostDrag()
+                    onDragListener?.onPostDrag()
                 }
             }
         }
@@ -170,19 +170,6 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
     }
 
 
-    /**
-     * is called at the start of onTouch
-     */
-    fun onPreDrag(){
-
-    }
-
-    /**
-     * is called at the end of onTouch
-     */
-    fun onPostDrag(){
-
-    }
 
     /**
      * internal method which ensures that this onTouchListener will not work until it is registered
@@ -213,14 +200,14 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
 
     private data class ScreenDimensions(var screenWidth:Int,var screenHeight:Int)
 
-    /**
+    /*
      * is used to attach an onDragListener to a child view of the inflated layout to which dragging
      * on the child view will result to the inflated layout moving
      * @param inflatedLayout the parent layout which was inflated with a layout inflater
      * @param inflatedLayoutParams the layout params of the parent layout which was inflated with a layout inflater
-     */
+     *
     class Child(private val inflatedLayout: View, private val inflatedLayoutParams: WindowManager.LayoutParams)
         : DraggableOverlayOnTouchListener(inflatedLayout,inflatedLayoutParams){
 
-    }
+    }*/
 }
