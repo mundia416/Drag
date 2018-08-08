@@ -1,4 +1,4 @@
-package com.nosetrap.draglib.overlay
+package com.nosetrap.draglib
 
 import android.app.Service
 import android.content.Context
@@ -68,6 +68,7 @@ abstract class DraggableOverlayService : Service() {
     /**
      * all draggable listeners should be registered with the service. this enables for the screen
      * Dimensions value to be updated in onConfigurationChanged
+     * this method can also be used to set the draggableOnTouchListener as the onTouchListener for a view
      */
     fun registerOnTouchListener(onTouchListener: DraggableOverlayOnTouchListener){
         onTouchListeners.add(onTouchListener)

@@ -1,4 +1,4 @@
-package com.nosetrap.draglib.overlay
+package com.nosetrap.draglib
 
 import android.content.Context
 import android.util.DisplayMetrics
@@ -130,8 +130,6 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
       onClickListenerGestureDetector.onTouchEvent(event)
             customGestureDetector?.onTouchEvent(event)
 
-        onDragListener?.onPreDrag()
-
         if (isActive && isDragEnabled) {
             val rawX = if (inverseX) (event.rawX * -1) else event.rawX
             val rawY = if (inverseY) (event.rawY * -1) else event.rawY
@@ -200,14 +198,4 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
 
     private data class ScreenDimensions(var screenWidth:Int,var screenHeight:Int)
 
-    /*
-     * is used to attach an onDragListener to a child view of the inflated layout to which dragging
-     * on the child view will result to the inflated layout moving
-     * @param inflatedLayout the parent layout which was inflated with a layout inflater
-     * @param inflatedLayoutParams the layout params of the parent layout which was inflated with a layout inflater
-     *
-    class Child(private val inflatedLayout: View, private val inflatedLayoutParams: WindowManager.LayoutParams)
-        : DraggableOverlayOnTouchListener(inflatedLayout,inflatedLayoutParams){
-
-    }*/
 }
