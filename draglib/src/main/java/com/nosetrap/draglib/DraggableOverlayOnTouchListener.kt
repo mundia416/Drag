@@ -33,9 +33,14 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
     var isDragEnabled = true
 
     /**
-     * defines whether this onTouchListener is ready for use, it can only be ready if it has been
-     * registered with a dragableOverlayService
+     * defines the return value of the onTouch() method
      */
+    var isTouchEnabled = true
+
+    /**
+     * defines whether this onTouchListener is ready for use, it can only be ready if it has been
+    * registered with a dragableOverlayService
+    */
     private var isActive = false
 
 
@@ -164,7 +169,7 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
                 }
             }
         }
-        return true
+        return isTouchEnabled
     }
 
 

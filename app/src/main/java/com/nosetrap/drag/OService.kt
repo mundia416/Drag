@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
 import android.widget.Button
-import com.nosetrap.draglib.overlay.DraggableOverlayOnTouchListener
-import com.nosetrap.draglib.overlay.DraggableOverlayService
+import com.nosetrap.draglib.DraggableOverlayOnTouchListener
+import com.nosetrap.draglib.DraggableOverlayService
 
 class OService : DraggableOverlayService() {
     private lateinit var buttonDragListener : DraggableOverlayOnTouchListener
@@ -26,7 +26,7 @@ class OService : DraggableOverlayService() {
         windowManager.addView(view,params)
 
 
-        buttonDragListener = DraggableOverlayOnTouchListener(view,params)
+        buttonDragListener = DraggableOverlayOnTouchListener(view, params)
         view.setOnTouchListener(buttonDragListener)
         (view.findViewById<Button>(R.id.btn)).setOnTouchListener(buttonDragListener)
     }
