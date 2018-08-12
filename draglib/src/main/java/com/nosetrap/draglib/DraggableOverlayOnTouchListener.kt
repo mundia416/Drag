@@ -12,7 +12,7 @@ import android.view.WindowManager
  * pass this class as an onTouchListener on a view
  * use subclass @Child if you want that dragging the view will result in the entire inflated layout to be dragged
  */
-open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View, private val overlayParams: WindowManager.LayoutParams)
+open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val overlayParams: WindowManager.LayoutParams)
     : View.OnTouchListener {
 
     /**
@@ -33,9 +33,9 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
     var isDragEnabled = true
 
     /**
-     * defines the return value of the onTouch() method
+     * defines whether clicking is enabled
      */
-    var isTouchEnabled = true
+    var isClickEnabled = true
 
     /**
      * defines whether this onTouchListener is ready for use, it can only be ready if it has been
@@ -71,7 +71,9 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
     private val onClickListenerGestureDetector = GestureDetector(inflatedOverlayView.context,object :GestureDetector.SimpleOnGestureListener(){
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             if(onClickListener != null){
-                onClickListener?.onClick(inflatedOverlayView)
+                if(isClickEnabled) {
+                    onClickListener?.onClick(inflatedOverlayView)
+                }
             }else{
                 return  false
             }
@@ -169,7 +171,7 @@ open class DraggableOverlayOnTouchListener(private val inflatedOverlayView: View
                 }
             }
         }
-        return isTouchEnabled
+        return true
     }
 
 
