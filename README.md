@@ -13,7 +13,7 @@ repositories {
 add the library to your module dependency
 ```
 dependencies {
-    implementation 'com.github.mundia416:Drag:0.1.2'
+    implementation 'com.github.mundia416:Drag:{LATEST_RELEASE}'
 }
 ```
 
