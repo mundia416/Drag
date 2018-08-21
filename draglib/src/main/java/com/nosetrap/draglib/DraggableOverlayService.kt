@@ -17,11 +17,9 @@ import java.util.*
 abstract class DraggableOverlayService : Service() {
     private val onTouchListeners = ArrayList<DraggableOverlayOnTouchListener>()
 
-    protected lateinit var layoutInflater: LayoutInflater
-    private var layoutInflaterInitialised = false
+    protected var layoutInflater: LayoutInflater? = null
 
-    protected lateinit var windowManager: WindowManager
-    private var windowManagerInitialised = false
+    protected var windowManager: WindowManager? = null
 
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -41,17 +39,15 @@ abstract class DraggableOverlayService : Service() {
      * inflate a view using the layoutInflater
      */
     fun inflateView(@LayoutRes layout:Int): View{
-        return layoutInflater.inflate(layout,null,false)
+        return layoutInflater?.inflate(layout,null,false)!!
     }
 
     private fun initVars(){
-        if(!layoutInflaterInitialised) {
+        if(layoutInflater == null) {
             layoutInflater = LayoutInflater.from(this)
-            layoutInflaterInitialised = true
         }
-        if(!windowManagerInitialised) {
+        if(windowManager == null) {
             windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            windowManagerInitialised = true
         }
     }
 
