@@ -26,7 +26,7 @@ abstract class DraggableOverlayService : Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         initVars()
         code(intent)
         registerDraggableTouchListener()
@@ -54,7 +54,7 @@ abstract class DraggableOverlayService : Service() {
     /**
      * the code to be executed in the onStartCommand
      */
-    abstract fun code(intent: Intent)
+    abstract fun code(intent: Intent?)
 
     /**
      * this is where all the draggable onTouchListeners should be registered
