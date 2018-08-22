@@ -35,6 +35,8 @@ abstract class DraggableOverlayService : Service() {
 
     }
 
+
+
     /**
      * inflate a view using the layoutInflater
      */
@@ -67,8 +69,10 @@ abstract class DraggableOverlayService : Service() {
      * this method can also be used to set the draggableOnTouchListener as the onTouchListener for a view
      */
     fun registerOnTouchListener(onTouchListener: DraggableOverlayOnTouchListener){
-        onTouchListeners.add(onTouchListener)
-        onTouchListener.activate()
+       if(!onTouchListeners.contains(onTouchListener)) {
+           onTouchListeners.add(onTouchListener)
+           onTouchListener.activate()
+       }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
