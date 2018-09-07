@@ -12,7 +12,7 @@ import android.view.WindowManager
  * pass this class as an onTouchListener on a view
  * use subclass @Child if you want that dragging the view will result in the entire inflated layout to be dragged
  */
-open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val overlayParams: WindowManager.LayoutParams)
+open class DragTouchListener(val inflatedOverlayView: View, val overlayParams: WindowManager.LayoutParams)
     : View.OnTouchListener {
 
     /**
@@ -28,7 +28,7 @@ open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val o
 
     /**
      * enable or disable the dragging ability. { even though this is enabled, it will only be able to
-     * drag once the onTouchListener has been registered with the draggableOverlayService
+     * drag once the onTouchListener has been registered with the draggableOverlayService}
      */
     var isDragEnabled = true
 
@@ -36,6 +36,11 @@ open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val o
      * defines whether clicking is enabled
      */
     var isClickEnabled = true
+
+    /**
+     * determines whether the onTouchListener returns true or false
+     */
+    var isTouchEnabled = true
 
     /**
      * defines whether this onTouchListener is ready for use, it can only be ready if it has been
@@ -153,17 +158,6 @@ open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val o
                     val newY = (this.startingGridY + event.rawY - this.startingTouchY).toInt()
                     overlayParams.x = newX
                     overlayParams.y = newY
-                   /* val inflatedWidth = (inflatedOverlayView?.width)
-                    if ((overlayParams.x + inflatedWidth) <= 0) {
-                      //  overlayParams.x = 1 - inflatedWidth
-                    } else if (overlayParams.x >= screenDimensions.screenWidth) {
-                       // overlayParams.x = screenDimensions.screenWidth - 1
-                    }
-                    if (overlayParams.y <= 0) {
-                       // overlayParams.y = 1
-                    } else if (overlayParams.y >= screenDimensions.screenHeight) {
-                       // overlayParams.y = screenDimensions.screenHeight - 1
-                    }*/
 
                     windowManager.updateViewLayout(inflatedOverlayView, overlayParams)
 
@@ -171,7 +165,8 @@ open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val o
                 }
             }
         }
-        return true
+
+        return isTouchEnabled
     }
 
 
@@ -191,10 +186,6 @@ open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val o
      * should be called whenever the configuration changes
      */
      internal fun updateScreenDimensions(){
-       /** if(windowManager == null){
-            windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        }*/
-        val display = this.windowManager.defaultDisplay
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getRealMetrics(displayMetrics)
         val screenWidth = displayMetrics.widthPixels
@@ -203,6 +194,8 @@ open class DraggableOverlayOnTouchListener( val inflatedOverlayView: View, val o
         screenDimensions = ScreenDimensions(screenWidth, screenHeight)
     }
 
+    /**
+     * screen dimension data class
+     */
     private data class ScreenDimensions(var screenWidth:Int,var screenHeight:Int)
-
 }

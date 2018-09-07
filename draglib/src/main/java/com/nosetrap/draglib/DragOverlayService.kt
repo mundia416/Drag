@@ -14,8 +14,8 @@ import java.util.*
 /**
  * a service for an overlay that is draggable
  */
-abstract class DraggableOverlayService : Service() {
-    private val onTouchListeners = ArrayList<DraggableOverlayOnTouchListener>()
+abstract class DragOverlayService : Service() {
+    private val onTouchListeners = ArrayList<DragTouchListener>()
 
     protected var layoutInflater: LayoutInflater? = null
 
@@ -29,7 +29,7 @@ abstract class DraggableOverlayService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         initVars()
         code(intent)
-        registerDraggableTouchListener()
+        registerDragTouchListeners()
 
         return super.onStartCommand(intent, flags, startId)
 
@@ -61,17 +61,17 @@ abstract class DraggableOverlayService : Service() {
     /**
      * this is where all the draggable onTouchListeners should be registered
      */
-    abstract fun registerDraggableTouchListener()
+    abstract fun registerDragTouchListeners()
 
     /**
      * all draggable listeners should be registered with the service. this enables for the screen
      * Dimensions value to be updated in onConfigurationChanged
      * this method can also be used to set the draggableOnTouchListener as the onTouchListener for a view
      */
-    fun registerOnTouchListener(onTouchListener: DraggableOverlayOnTouchListener){
-       if(!onTouchListeners.contains(onTouchListener)) {
-           onTouchListeners.add(onTouchListener)
-           onTouchListener.activate()
+    fun register(dragTouchListener: DragTouchListener){
+       if(!onTouchListeners.contains(dragTouchListener)) {
+           onTouchListeners.add(dragTouchListener)
+           dragTouchListener.activate()
        }
     }
 

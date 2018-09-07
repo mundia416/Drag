@@ -8,14 +8,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
 import android.widget.Button
-import com.nosetrap.draglib.DraggableOverlayOnTouchListener
-import com.nosetrap.draglib.DraggableOverlayService
+import com.nosetrap.draglib.DragTouchListener
+import com.nosetrap.draglib.DragOverlayService
 
-class OService : DraggableOverlayService() {
-    private lateinit var buttonDragListener : DraggableOverlayOnTouchListener
+class OService : DragOverlayService() {
+    private lateinit var buttonDragListener : DragTouchListener
 
-    override fun code(intent: Intent) {
-        val view = layoutInflater.inflate(R.layout.overlay,null,false)
+    override fun code(intent: Intent?) {
+        val view = layoutInflater?.inflate(R.layout.overlay,null,false)
        // val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val params = WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -23,15 +23,15 @@ class OService : DraggableOverlayService() {
                 else WindowManager.LayoutParams.TYPE_SYSTEM_ERROR, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT)
-        windowManager.addView(view,params)
+        windowManager?.addView(view,params)
 
 
-        buttonDragListener = DraggableOverlayOnTouchListener(view, params)
+        buttonDragListener = DragTouchListener(view!!, params)
         view.setOnTouchListener(buttonDragListener)
         (view.findViewById<Button>(R.id.btn)).setOnTouchListener(buttonDragListener)
     }
 
-    override fun registerDraggableTouchListener() {
-       registerOnTouchListener(buttonDragListener)
+    override fun registerDragTouchListeners() {
+       register(buttonDragListener)
     }
 }
