@@ -137,31 +137,33 @@ open class DragTouchListener(val inflatedOverlayView: View, val overlayParams: W
      *
      */
     override fun onTouch(view: View, event: MotionEvent): Boolean {
-        onDragListener?.onDrag(view)
+        if (isTouchEnabled) {
+            onDragListener?.onDrag(view)
 
-      onClickListenerGestureDetector.onTouchEvent(event)
+            onClickListenerGestureDetector.onTouchEvent(event)
             customGestureDetector?.onTouchEvent(event)
 
-        if (isActive && isDragEnabled) {
-            val rawX = if (inverseX) (event.rawX * -1) else event.rawX
-            val rawY = if (inverseY) (event.rawY * -1) else event.rawY
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    startingGridX = params.x
-                    startingGridY = params.y
-                    startingTouchX = rawX
-                    startingTouchY = rawY
-                }
+            if (isActive && isDragEnabled) {
+                val rawX = if (inverseX) (event.rawX * -1) else event.rawX
+                val rawY = if (inverseY) (event.rawY * -1) else event.rawY
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        startingGridX = params.x
+                        startingGridY = params.y
+                        startingTouchX = rawX
+                        startingTouchY = rawY
+                    }
 
-                MotionEvent.ACTION_MOVE -> {
-                    val newX = (startingGridX + (rawX - this.startingTouchX)).toInt()
-                    val newY = (this.startingGridY + event.rawY - this.startingTouchY).toInt()
-                    overlayParams.x = newX
-                    overlayParams.y = newY
+                    MotionEvent.ACTION_MOVE -> {
+                        val newX = (startingGridX + (rawX - this.startingTouchX)).toInt()
+                        val newY = (this.startingGridY + event.rawY - this.startingTouchY).toInt()
+                        overlayParams.x = newX
+                        overlayParams.y = newY
 
-                    windowManager.updateViewLayout(inflatedOverlayView, overlayParams)
+                        windowManager.updateViewLayout(inflatedOverlayView, overlayParams)
 
-                    onDragListener?.onPostDrag()
+                        onDragListener?.onPostDrag()
+                    }
                 }
             }
         }
