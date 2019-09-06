@@ -1,22 +1,21 @@
 package com.nosetrap.drag
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.nosetrap.applib.Activity
+import androidx.appcompat.app.AppCompatActivity
+import com.nosetrap.permissionlib.PermissionManager
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : Activity() {
-    override fun code() {
+class MainActivity : AppCompatActivity() {
 
+    @SuppressLint("NewApi")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         btn.setOnClickListener {
-            if(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        PermissionManager.canDrawOverlays(this)
-                    } else {
-                       true
-                    }) {
+            if(PermissionManager.canDrawOverlays(this)) {
                 startService(Intent(this, OService::class.java))
             }else{
                 PermissionManager.requestDrawOverlays(this,100)
@@ -29,11 +28,5 @@ class MainActivity : Activity() {
         startService(Intent(this, OService::class.java))
     }
 
-    override fun initVariables() {
 
-    }
-
-    override fun setView(): Int {
-        return R.layout.activity_main
-    }
 }

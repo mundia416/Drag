@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.IBinder
-import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
+import com.nosetrap.draglib.util.DragUtil
 import java.util.*
 
 /**
@@ -17,9 +19,8 @@ import java.util.*
 abstract class DragOverlayService : Service() {
     private val onTouchListeners = ArrayList<DragTouchListener>()
 
-    protected var layoutInflater: LayoutInflater? = null
-
-    protected var windowManager: WindowManager? = null
+    private val layoutInflater: LayoutInflater by lazy { LayoutInflater.from(this) }
+    private val windowManager: WindowManager by lazy { getSystemService(Context.WINDOW_SERVICE) as WindowManager }
 
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -27,54 +28,65 @@ abstract class DragOverlayService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        initVars()
         code(intent)
-        registerDragTouchListeners()
 
         return super.onStartCommand(intent, flags, startId)
-
     }
 
+    fun createDragTouchListener(@LayoutRes inflateLayout: Int,parent: DragTouchListener? = null,
+                                overlayParams: WindowManager.LayoutParams = DragUtil.getLayoutParams()): DragTouchListener {
+        return createDragTouchListener(inflateView(inflateLayout),parent,overlayParams)
+    }
 
+    fun createDragTouchListener(inflatedOverlayView: View,parent: DragTouchListener? = null,
+                                overlayParams: WindowManager.LayoutParams = DragUtil.getLayoutParams()): DragTouchListener{
+        val dragTouchListener = DragTouchListener(inflatedOverlayView,parent,overlayParams)
+        registerDragTouchListener(dragTouchListener)
+        return dragTouchListener
+    }
 
     /**
      * inflate a view using the layoutInflater
      */
-    fun inflateView(@LayoutRes layout:Int): View{
-        return layoutInflater?.inflate(layout,null,false)!!
+    protected fun inflateView(@LayoutRes layout:Int): View{
+        return layoutInflater.inflate(layout,null,false)!!
     }
 
-    private fun initVars(){
-        if(layoutInflater == null) {
-            layoutInflater = LayoutInflater.from(this)
-        }
-        if(windowManager == null) {
-            windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        }
+    protected fun addViewToWindow(dragTouchListener: DragTouchListener){
+        windowManager.addView(dragTouchListener.view,dragTouchListener.layoutParams)
     }
+
+    protected fun removeViewFromWindow(dragTouchListener: DragTouchListener){
+        windowManager.removeView(dragTouchListener.view)
+    }
+
+    /**
+     * this updates the changes to the layout params of the view attached to the [dragTouchListener]
+     * on the [windowManager]
+     */
+    fun updateViewOnWindow(dragTouchListener: DragTouchListener){
+        windowManager.updateViewLayout(dragTouchListener.view,dragTouchListener.layoutParams)
+    }
+
 
     /**
      * the code to be executed in the onStartCommand
      */
     abstract fun code(intent: Intent?)
 
-    /**
-     * this is where all the draggable onTouchListeners should be registered
-     */
-    abstract fun registerDragTouchListeners()
 
     /**
      * all draggable listeners should be registered with the service. this enables for the screen
      * Dimensions value to be updated in onConfigurationChanged
-     * this method can also be used to set the draggableOnTouchListener as the onTouchListener for a view
      */
-    fun register(dragTouchListener: DragTouchListener){
+    private fun registerDragTouchListener(dragTouchListener: DragTouchListener){
        if(!onTouchListeners.contains(dragTouchListener)) {
            onTouchListeners.add(dragTouchListener)
            dragTouchListener.activate()
        }
     }
 
+    @CallSuper
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
         //update the screen dimensions on the onTouchListeners
