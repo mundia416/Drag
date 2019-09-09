@@ -21,15 +21,14 @@ class OService : DragOverlayService() {
 
         btnDragListener.onClickListener = View.OnClickListener {
             Timber.d("btn Clicked")
-            btnDragListener.view.visibility = View.GONE
-            exitListener.view.visibility = View.VISIBLE
+            middleListener.view.visibility = View.GONE
 
         }
 
         exitListener.onClickListener = View.OnClickListener {
             Timber.d("exit Clicked")
-            btnDragListener.view.visibility = View.VISIBLE
-            exitListener.view.visibility = View.GONE
+            middleListener.view.visibility = View.VISIBLE
+
         }
     }
 }

@@ -34,7 +34,7 @@ abstract class DragOverlayService : Service() {
     }
 
     fun createDragTouchListener(@LayoutRes inflateLayout: Int,parent: DragTouchListener? = null,
-                                overlayParams: WindowManager.LayoutParams = DragUtil.getLayoutParams()): DragTouchListener {
+                                overlayParams: WindowManager.LayoutParams? = null): DragTouchListener {
         return createDragTouchListener(inflateView(inflateLayout),parent,overlayParams)
     }
 
