@@ -39,8 +39,13 @@ abstract class DragOverlayService : Service() {
     }
 
     fun createDragTouchListener(inflatedOverlayView: View,parent: DragTouchListener? = null,
-                                overlayParams: WindowManager.LayoutParams = DragUtil.getLayoutParams()): DragTouchListener{
-        val dragTouchListener = DragTouchListener(inflatedOverlayView,parent,overlayParams)
+                                overlayParams: WindowManager.LayoutParams? = null): DragTouchListener{
+        val params = if(parent == null) {
+            overlayParams ?:  DragUtil.getLayoutParams()
+        }else{
+            overlayParams ?: parent.layoutParams
+        }
+        val dragTouchListener = DragTouchListener(inflatedOverlayView,parent,params)
         registerDragTouchListener(dragTouchListener)
         return dragTouchListener
     }

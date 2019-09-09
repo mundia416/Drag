@@ -6,24 +6,30 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import com.nosetrap.draglib.DragTouchListener
 import com.nosetrap.draglib.DragOverlayService
+import timber.log.Timber
 
 class OService : DragOverlayService() {
     private val controllerDragListener : DragTouchListener by lazy { createDragTouchListener(R.layout.overlay) }
 
     override fun code(intent: Intent?) {
+        Timber.d("overlay started")
         addViewToWindow(controllerDragListener)
-        val btnDragListener = createDragTouchListener(controllerDragListener.findView(R.id.btn),
-                controllerDragListener,controllerDragListener.layoutParams)
-        val exitListener = createDragTouchListener(controllerDragListener.findView(R.id.exit),
-                controllerDragListener,controllerDragListener.layoutParams)
+        val btnDragListener = createDragTouchListener(controllerDragListener.findView(R.id.btn), controllerDragListener)
+        val exitListener = createDragTouchListener(controllerDragListener.findView(R.id.exit), controllerDragListener)
+        val middleListener = createDragTouchListener(controllerDragListener.findView(R.id.btnMiddle), controllerDragListener)
+
 
         btnDragListener.onClickListener = View.OnClickListener {
-           // controllerDragListener.isDragEnabled = !btnDragListener.isDragEnabled
-            btnDragListener.setGravity(Gravity.CENTER_VERTICAL.or(GravityCompat.START))
+            Timber.d("btn Clicked")
+            btnDragListener.view.visibility = View.GONE
+            exitListener.view.visibility = View.VISIBLE
+
         }
 
         exitListener.onClickListener = View.OnClickListener {
-            removeViewFromWindow(controllerDragListener)
+            Timber.d("exit Clicked")
+            btnDragListener.view.visibility = View.VISIBLE
+            exitListener.view.visibility = View.GONE
         }
     }
 }

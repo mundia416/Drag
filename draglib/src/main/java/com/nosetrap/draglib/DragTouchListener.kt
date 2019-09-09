@@ -5,7 +5,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.IdRes
-import androidx.core.view.GravityCompat
 import com.nosetrap.draglib.data.ScreenDimensions
 import com.nosetrap.draglib.util.ScreenUtil
 
@@ -55,8 +54,6 @@ class DragTouchListener internal constructor(val view: View,val parent: DragTouc
 
     var onDragListener: OnDragListener? = null
 
-
-
     /**
      * is a gesture detector defined by the user to create your own gestures
      */
@@ -65,8 +62,6 @@ class DragTouchListener internal constructor(val view: View,val parent: DragTouc
     fun findView(@IdRes viewId: Int): View {
         return this.view.findViewById(viewId)
     }
-
-
 
         /**
      * set a user defined gesture listener
@@ -84,8 +79,6 @@ class DragTouchListener internal constructor(val view: View,val parent: DragTouc
         return isTouchEnabled
     }
 
-
-
     /**
      * internal method which ensures that this onTouchListener will not work until it is registered
      * with the draggableOverlayService, it has to be registered to ensure that the screen dimension
@@ -96,12 +89,10 @@ class DragTouchListener internal constructor(val view: View,val parent: DragTouc
 
     }
 
-
     /**
      * should be called whenever the configuration changes
      */
      internal fun updateScreenDimensions(){
         screenDimensions = screenUtil.getScreenDimension()
     }
-
 }
