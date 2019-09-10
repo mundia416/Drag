@@ -28,6 +28,7 @@ class OService : DragOverlayService() {
         exitListener.onClickListener = View.OnClickListener {
             Timber.d("exit Clicked")
             middleListener.view.visibility = View.VISIBLE
+            removeViewFromWindow(controllerDragListener)
 
         }
     }

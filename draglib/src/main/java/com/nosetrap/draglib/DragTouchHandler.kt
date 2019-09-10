@@ -36,7 +36,7 @@ internal class DragTouchHandler(private val dragTouchListener: DragTouchListener
 
         if (dragTouchListener.isActive && dragTouchListener.isDragEnabled) {
 
-            dragTouchListener.onDragListener?.onDrag(view)
+            handleOnDragListener(view)
 
             val rawX = if (dragTouchListener.inverseX) (event.rawX * -1) else event.rawX
             val rawY = if (dragTouchListener.inverseY) (event.rawY * -1) else event.rawY
@@ -45,6 +45,22 @@ internal class DragTouchHandler(private val dragTouchListener: DragTouchListener
                 MotionEvent.ACTION_DOWN -> actionDown(rawX, rawY)
                 MotionEvent.ACTION_MOVE -> actionMove(rawX, rawY, event)
             }
+        }
+    }
+
+    private fun handleOnDragListener(view: View){
+        dragTouchListener.onDragListener?.onDrag(view)
+        dragTouchListener.parent?.onDragListener?.onDrag(view)
+        for(child in dragTouchListener.dragTouchListenerChildren){
+            child.onDragListener?.onDrag(view)
+        }
+    }
+
+    private fun handleOnPostDragListener(){
+        dragTouchListener.onDragListener?.onPostDrag()
+        dragTouchListener.parent?.onDragListener?.onPostDrag()
+        for(child in dragTouchListener.dragTouchListenerChildren){
+            child.onDragListener?.onPostDrag()
         }
     }
 
@@ -71,6 +87,6 @@ internal class DragTouchHandler(private val dragTouchListener: DragTouchListener
                     " or specify a parent object of ${DragTouchListener::class.java}")
         }
 
-        dragTouchListener.onDragListener?.onPostDrag()
+        handleOnPostDragListener()
     }
 }

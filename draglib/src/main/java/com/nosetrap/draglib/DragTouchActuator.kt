@@ -12,7 +12,13 @@ abstract class DragTouchActuator(parent: DragTouchActuator?) : View.OnTouchListe
     /**
      * a list of children where this dragTouchListener has been passed a parent
      */
-    private val dragTouchListenerChildren by lazy { ArrayList<DragTouchActuator>() }
+    internal val dragTouchListenerChildren by lazy { ArrayList<DragTouchActuator>() }
+
+    /**
+     * when a child is dragged, its parent's onDragListener is alse called.
+     * this is true for when a parent's onDragListener is called, its childrens onDrag listener is also called
+     */
+    var onDragListener: OnDragListener? = null
 
 
     // inverseX is used to determine whether the movement of the x axis should be in the opposite

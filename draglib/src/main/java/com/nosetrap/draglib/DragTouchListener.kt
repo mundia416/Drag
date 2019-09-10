@@ -52,8 +52,6 @@ class DragTouchListener internal constructor(val view: View,val parent: DragTouc
 
      var onClickListener: View.OnClickListener? = null
 
-    var onDragListener: OnDragListener? = null
-
     /**
      * is a gesture detector defined by the user to create your own gestures
      */
