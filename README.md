@@ -17,42 +17,6 @@ dependencies {
 }
 ```
 
-
-the DraggableOverlayOnTouchListener can only work if used in the DraggableOverlayService. create a subclass that
-extends the DraggableOverlayService.
-
-create a draggable overlay onTouchListener
-```
-    val onTouchListener = DraggableOverlayOnTouchListener(inflatedOverlay,overlayParams)
-```
-set it as the OnTouchListener for the inflated view. you can also set it as the onTouchListener for the child views of the inflated 
-view or you can create a seperate draggable overlay onTouchListener
-```
-        inflatedOverlay.setOnTouchListener(onTouchListener)
-```
-
-register the DraggableOverlayOnTouchListener with the DraggableOverlayService
-```
-override fun registerDraggableTouchListener() {
-        registerOnTouchListener(onTouchListener)
-}
-```
-    
-## Set OnClickListener
-
-if a DraggableOnTouchListener is attached to a view, any onClick listener currently attacked to the same view will not work.
-the onClickListener will have to be attacked to the DraggableOnTouchListener
-```
-                onTouchListener.setOnClickListener(View.OnClickListener {  })
-```
-
-## Invert
-you can set the movement of the overlay to be inverted
-```
-                onTouchListener.setInverseX(true)
-                onTouchListener.setInverseY(true)
-```
-
 ## Author
 
 Mundia Mundia 
