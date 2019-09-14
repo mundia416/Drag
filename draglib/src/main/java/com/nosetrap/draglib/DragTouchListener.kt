@@ -50,7 +50,10 @@ class DragTouchListener internal constructor(val view: View,val parent: DragTouc
 
     private lateinit var screenDimensions : ScreenDimensions
 
-     var onClickListener: View.OnClickListener? = null
+    /**
+     * @param id is the id of the dragTouchListener
+     */
+     var onClickListener: ((view: View,listenerId: Int?) -> Unit)? = null
 
     /**
      * is a gesture detector defined by the user to create your own gestures

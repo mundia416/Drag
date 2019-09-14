@@ -10,6 +10,11 @@ abstract class DragTouchActuator(parent: DragTouchActuator?) : View.OnTouchListe
     }
 
     /**
+     * the id of this object
+     */
+    var id: Int? = null
+
+    /**
      * a list of children where this dragTouchListener has been passed a parent
      */
     internal val dragTouchListenerChildren by lazy { ArrayList<DragTouchActuator>() }

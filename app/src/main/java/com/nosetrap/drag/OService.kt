@@ -19,13 +19,13 @@ class OService : DragOverlayService() {
         val middleListener = createDragTouchListener(controllerDragListener.findView(R.id.btnMiddle), controllerDragListener)
 
 
-        btnDragListener.onClickListener = View.OnClickListener {
+        btnDragListener.onClickListener = { _,_ ->
             Timber.d("btn Clicked")
             middleListener.view.visibility = View.GONE
 
         }
 
-        exitListener.onClickListener = View.OnClickListener {
+        exitListener.onClickListener = { _,_ ->
             Timber.d("exit Clicked")
             middleListener.view.visibility = View.VISIBLE
             removeViewFromWindow(controllerDragListener)

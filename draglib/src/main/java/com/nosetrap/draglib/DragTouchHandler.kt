@@ -21,7 +21,7 @@ internal class DragTouchHandler(private val dragTouchListener: DragTouchListener
                 override fun onSingleTapUp(e: MotionEvent): Boolean {
                     if (dragTouchListener.onClickListener != null) {
                         if (dragTouchListener.isClickEnabled) {
-                            dragTouchListener.onClickListener?.onClick(dragTouchListener.view)
+                            dragTouchListener.onClickListener?.invoke(dragTouchListener.view,dragTouchListener.id)
                         }
                     } else {
                         return false
@@ -49,18 +49,18 @@ internal class DragTouchHandler(private val dragTouchListener: DragTouchListener
     }
 
     private fun handleOnDragListener(view: View){
-        dragTouchListener.onDragListener?.onDrag(view)
-        dragTouchListener.parent?.onDragListener?.onDrag(view)
+        dragTouchListener.onDragListener?.onDrag(view,dragTouchListener.id)
+        dragTouchListener.parent?.onDragListener?.onDrag(view,dragTouchListener.id)
         for(child in dragTouchListener.dragTouchListenerChildren){
-            child.onDragListener?.onDrag(view)
+            child.onDragListener?.onDrag(view,dragTouchListener.id)
         }
     }
 
     private fun handleOnPostDragListener(){
-        dragTouchListener.onDragListener?.onPostDrag()
-        dragTouchListener.parent?.onDragListener?.onPostDrag()
+        dragTouchListener.onDragListener?.onPostDrag(dragTouchListener.id)
+        dragTouchListener.parent?.onDragListener?.onPostDrag(dragTouchListener.id)
         for(child in dragTouchListener.dragTouchListenerChildren){
-            child.onDragListener?.onPostDrag()
+            child.onDragListener?.onPostDrag(dragTouchListener.id)
         }
     }
 
