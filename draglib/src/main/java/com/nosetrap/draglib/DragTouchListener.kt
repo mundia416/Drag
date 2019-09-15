@@ -17,7 +17,7 @@ import com.nosetrap.draglib.util.ScreenUtil
  * is not added to the windowManager
  */
 class DragTouchListener internal constructor(val view: View,val parent: DragTouchListener? = null,
-                                                   val layoutParams: WindowManager.LayoutParams)
+                                                   var layoutParams: WindowManager.LayoutParams)
     : DragTouchActuator(parent) {
 
     /**
